@@ -2,6 +2,7 @@
 
 # Importando as bibliotecas necessárias.
 import pygame
+import random
 from os import path
 
 # Estabelece a pasta que contem as figuras.
@@ -48,7 +49,7 @@ class Player(pygame.sprite.Sprite):
         
         # Velocidade da nave
         self.speedx = 0
-    
+        
     # Metodo que atualiza a posição da navinha
     def update(self):
         self.rect.x += self.speedx
@@ -58,6 +59,36 @@ class Player(pygame.sprite.Sprite):
         if self.rect.left < 0:
             self.rect.left = 0
 
+#Classe Mob que representa o meteoro
+class Mob(pygame.sprite.Sprite):
+    
+    #Construtor da classe
+    def __init__(self):
+        
+        # Construtor da classe pai (Sprite).
+        pygame.sprite.Sprite.__init__(self)
+        
+        # Carregando a imagem de fundo.
+        player_img = pygame.image.load(path.join(img_dir, "meteorBrown_med1.png")).convert()
+        self.image = player_img
+        
+        # Diminuindoo tamanho da imagem.
+        self.image = pygame.transform.scale(player_img, (50, 38))
+        
+        # Deixando transparente.
+        self.image.set_colorkey(BLACK)
+        
+        # Detalhes sobre o posicionamento.
+        self.rect = self.image.get_rect()
+        
+        # Centraliza embaixo da tela.
+        self.rect.centerx = random.randrange(0, WIDTH)
+        self.rect.centery = random.randrange(-100,-40)
+                
+        # Velocidade do meteoro
+        self.speedx = random.randrange(-3,3)
+        self.speedy = random.randrange(2,9)
+        
 # Inicialização do Pygame.
 pygame.init()
 pygame.mixer.init()
@@ -66,7 +97,7 @@ pygame.mixer.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 # Nome do jogo
-pygame.display.set_caption("Navinha")
+pygame.display.set_caption("Dorinha")
 
 # Variável para o ajuste de velocidade
 clock = pygame.time.Clock()
@@ -78,9 +109,17 @@ background_rect = background.get_rect()
 # Cria uma nave.  construtor será chamado automaticamente.
 player = Player()
 
+# Cria o meteoro.
+meteoro = Mob()
+
 # Cria um grupo de sprites e adiciona a nave.
 all_sprites = pygame.sprite.Group()
 all_sprites.add(player)
+all_sprites.add(meteoro)
+
+# Cria um gruppo Mobs e Adiciona o meteoro.
+mobs = pygame.sprite.Group()
+mobs.add(meteoro)
 
 # Comando para evitar travamentos.
 try:
