@@ -30,11 +30,11 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         
         # Carregando a imagem de fundo.
-        player_img = pygame.image.load(path.join(img_dir, "playerShip1_orange.png"))
+        player_img = pygame.image.load(path.join(img_dir, "playerShip1_orange.png")).convert()
         self.image = player_img
         
         # Diminuindoo tamanho da imagem.
-        self.image = pygame.rannsform.scale(player_img, (50, 38))
+        self.image = pygame.transform.scale(player_img, (50, 38))
         
         # Deixando transparente.
         self.image.set_colorkey(BLACK)
@@ -66,7 +66,7 @@ pygame.mixer.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 # Nome do jogo
-pygame.display.set_caption("Asteroids")
+pygame.display.set_caption("Navinha")
 
 # Variável para o ajuste de velocidade
 clock = pygame.time.Clock()
@@ -100,7 +100,7 @@ try:
                 running = False
                 
             # Verifica se apertou alguma tecla.
-            if event.key == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN:
                 # Dependendo da tecla, altera a velocidade.
                 if event.key == pygame.K_LEFT:
                     player.speedx = -8
@@ -108,16 +108,16 @@ try:
                     player.speedx = 8
             
             # Verifica se soltou alguma tecla
-            if event.key == pygame.KEYUP:
+            if event.type == pygame.KEYUP:
                 # Dependendo da tecla, altera a velocidade.
                 if event.key == pygame.K_LEFT:
                     player.speedx = 0
                 if event.key == pygame.K_RIGHT:
                     player.speedx = 0
                     
-            # Depois de processar os eventos.
-            # Atualiza a ação de cada sprite.
-            all_sprite.update()
+        # Depois de processar os eventos.
+        # Atualiza a ação de cada sprite.
+        all_sprites.update()
     
         # A cada loop, redesenha o fundo e os sprites
         screen.fill(BLACK)
